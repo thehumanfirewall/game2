@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Fake Manager Call</title>
+
+<style>
+body{
+  background:#0a0f1c;
+  color:#fff;
+  font-family:Arial;
+  text-align:center;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+.card{
+  background:#111827;
+  padding:20px;
+  border-radius:15px;
+  margin-top:20px;
+}
+
+button{
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  border-radius:8px;
+  background:#00bcd4;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#00e5ff;
+}
+
+#scoreBox{
+  display:flex;
+  justify-content:space-between;
+}
+
+.progress{
+  width:100%;
+  height:20px;
+  background:#333;
+  border-radius:10px;
+  margin-top:10px;
+}
+
+.bar{
+  height:100%;
+  width:0%;
+  background:#00e5ff;
+  border-radius:10px;
+}
+
+.red{background:#ff4444;}
+.green{background:#00ff99;}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎧 The Fake Manager Call</h1>
+
+<div id="scoreBox">
+  <div>Score: <span id="score">50</span></div>
+  <div>Awareness: <span id="level">Medium</span></div>
+</div>
+
+<div class="progress"><div id="bar" class="bar"></div></div>
+
+<div id="game" class="card"></div>
+
+</div>
+
+<script>
+
+let score = 50;
+
+function updateUI(){
+  document.getElementById("score").innerText = score;
+
+  let level = "High Risk";
+  if(score>=80) level="Strong Firewall";
+  else if(score>=50) level="Medium";
+
+  document.getElementById("level").innerText = level;
+  document.getElementById("bar").style.width = score + "%";
+}
+
+function start(){
+  document.getElementById("game").innerHTML = `
+  <h2>Omar is working from home</h2>
+  <p>I have too much work today...</p>
+  <button onclick="openLaptop()">Laptop</button>
+  <button onclick="incomingCall()">Phone</button>
+  <button onclick="viewFiles()">Files</button>
+  `;
+}
+
+function openLaptop(){
+  document.getElementById("game").innerHTML = `
+  <h2>Company Dashboard</h2>
+  <p>Confidential Files:</p>
+  <ul>
+    <li>Finance Report</li>
+    <li>Client Data</li>
+  </ul>
+  <button onclick="incomingCall()">Continue</button>
+  `;
+}
+
+function viewFiles(){
+  alert("Confidential files ready.");
+}
+
+function incomingCall(){
+  document.getElementById("game").innerHTML = `
+  <h2>📞 Incoming Call: Manager</h2>
+  <p>"Omar, send finance file NOW to:</p>
+  <p><b>manager.office.backup@gmail.com</b></p>
+  <p>This is urgent."</p>
+
+  <p>💭 "The voice sounds real... but email looks strange."</p>
+
+  <button onclick="sendFile()">Send File</button>
+  <button onclick="verifyCall()">Call Manager</button>
+  <button onclick="askChat()">Ask on Chat</button>
+  <button onclick="ignore()">Ignore</button>
+  `;
+}
+
+function sendFile(){
+  score -= 25;
+  updateUI();
+
+  document.getElementById("game").innerHTML = `
+  <h2 class="red">Uploading file...</h2>
+  <p>File sent to unknown email ❌</p>
+
+  <p>Attacker: "Send client data too."</p>
+
+  <button onclick="sendAgain()">Send Again</button>
+  <button onclick="report()">Report Incident</button>
+  <button onclick="question()">Ask Why</button>
+  `;
+}
+
+function sendAgain(){
+  score -= 35;
+  updateUI();
+
+  endGame("❌ Data Breach! You trusted the attacker.");
+}
+
+function report(){
+  score += 20;
+  updateUI();
+
+  endGame("✅ Good! You reported the incident.");
+}
+
+function question(){
+  alert("Attacker avoids answer.");
+}
+
+function verifyCall(){
+  score += 20;
+  updateUI();
+
+  endGame("✅ Manager says: I never called. Good verification!");
+}
+
+function askChat(){
+  score += 10;
+  updateUI();
+
+  alert("Company confirms suspicious request.");
+}
+
+function ignore(){
+  score -=5;
+  updateUI();
+
+  endGame("⚠️ You ignored but didn't report.");
+}
+
+function endGame(msg){
+  document.getElementById("game").innerHTML = `
+  <h2>${msg}</h2>
+
+  <h3>⚠️ Deepfake Voice Scam</h3>
+
+  <p>
+  Attackers used AI voice cloning and urgency.
+  </p>
+
+  <p>
+  Never trust voice alone.
+  Always verify.
+  </p>
+
+  <button onclick="restart()">Restart</button>
+  `;
+}
+
+function restart(){
+  score=50;
+  updateUI();
+  start();
+}
+
+updateUI();
+start();
+
+</script>
+
+</body>
+</html>
